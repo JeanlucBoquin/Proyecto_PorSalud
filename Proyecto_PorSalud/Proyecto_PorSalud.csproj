@@ -175,9 +175,11 @@
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Clientes\Index.cshtml" />
-    <Content Include="Views\_Tabla.cshtml" />
+    <Content Include="Views\Clientes\_Tabla.cshtml" />
     <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Documentos.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

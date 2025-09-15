@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="m-0">Clientes</h3>
+    <a class="btn btn-primary" href="@Url.Action("Create")">Crear nuevo cliente</a>
+</div>
+
+<div class="row g-2 mb-2">
+    <div class="col-auto">
+        <input id="txtSearch" class="form-control" placeholder="Buscar..." />
+    </div>
+    <div class="col-auto">
+        <button id="btnBuscar" class="btn btn-outline-secondary">Buscar</button>
+    </div>
+</div>
+
+<div id="contenedorTabla" class="card shadow-sm">
+    <div class="card-body">
+        <div class="text-center text-muted">Cargando...</div>
+    </div>
+</div>
+
+@section scripts{
+        <script src="~/Scripts/clientes-index.js"></script>
+        <script>ClientesIndex.init();</script>
+}
+
+@*@section scripts{
+  <script>
+  var ClientesIndex = (function () {
+    var state = { page: 1, pageSize: 20, search: "" };
+    var urlLista = '@Url.Action("lista", "Clientes")'; // <-- genera URL correcta
+
+
+
+      function cargar() {
+          //$("#contenedorTabla").load(urlLista, state);
+          $("#contenedorTabla").load("/Clientes/lista", state);
+      }
+
+      function wire() {
+          $("#btnBuscar").on("click", function () {
+              state.search = $("#txtSearch").val();
+              state.page = 1;
+              cargar();
+          });
+
+          // delegación para links de paginado
+          $("#contenedorTabla").on("click", ".link-page", function (e) {
+              e.preventDefault();
+              state.page = $(this).data("page");
+              cargar();
+          });
+      }
+
+      return {
+          init: function () { wire(); cargar(); }
+      };
+  })();
+
+  ClientesIndex.init();
+    </script>
+}*@

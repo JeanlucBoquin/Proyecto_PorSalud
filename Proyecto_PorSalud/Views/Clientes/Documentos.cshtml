@@ -1,0 +1,32 @@
+@model Proyecto_PorSalud.Models.Cliente
+@{
+    ViewBag.Title = "Documentos de " + Model.NombreCompleto;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Documentos de @Model.NombreCompleto</h3>
+    <a class="btn btn-outline-secondary" href="@Url.Action("Details", new { id = Model.Id })">Volver al cliente</a>
+</div>
+
+@if (!Model.Documentos.Any())
+{
+    <div class="alert alert-info">No hay documentos para este cliente.</div>
+}
+else
+{
+    <div class="row">
+        @foreach (var d in Model.Documentos)
+        {
+            <div class="col-md-6">
+                <div class="card mb-3 shadow-sm">
+                    <div class="card-header">@d.Titulo <span class="text-muted small">(@d.Fecha.ToShortDateString())</span></div>
+                    <div class="card-body">
+                        <div class="ratio ratio-4x3 border">
+                            <iframe src="@Url.Action("VerPdf", new { docId = d.Id })" title="@d.Titulo"></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
