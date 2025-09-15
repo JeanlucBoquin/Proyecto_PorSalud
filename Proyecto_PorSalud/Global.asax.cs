@@ -1,3 +1,4 @@
+using Proyecto_PorSalud.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,10 @@ namespace Proyecto_PorSalud
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            var db = new AppDbContext();
+            var clienteService = new Services.ClienteService(db);
+            Application["ClienteService"] = clienteService;
         }
     }
 }

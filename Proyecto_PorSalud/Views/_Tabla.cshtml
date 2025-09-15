@@ -1,0 +1,47 @@
+﻿@using Proyecto_PorSalud.Services
+@model PagedResult<Proyecto_PorSalud.Models.Cliente>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Identificación</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Activo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Items)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Identificacion</td>
+                <td>@c.NombreCompleto</td>
+                <td>@c.Correo</td>
+                <td><span class="badge @(c.Activo? "bg-success":"bg-secondary")">@((c.Activo)?"Sí":"No")</span></td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Details", new { id = c.Id })">Detalles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- paginado Bootstrap -->
+<nav>
+    <ul class="pagination">
+        @{
+            var start = Math.Max(1, Model.Page - 2);
+            var end = Math.Min(Model.TotalPages, Model.Page + 2);
+            for (int i = start; i <= end; i++)
+            {
+                <li class="page-item @(i==Model.Page? "active":"")">
+                    <a class="page-link link-page" href="#" data-page="@i">@i</a>
+                </li>
+            }
+        }
+    </ul>
+    <small class="text-muted">Total: @Model.TotalItems registros</small>
+</nav>
