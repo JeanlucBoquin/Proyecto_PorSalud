@@ -12,7 +12,7 @@ namespace Proyecto_PorSalud.Services
         Task<PagedResult<Cliente>> GetPagedAsync(int page, int pageSize, string search);
         Task<Cliente> GetByIdAsync(int id);
         Task<int> CreateAsync(Cliente c);
-        Task UpdateAsync(Cliente c);
+        Task<bool> UpdateAsync(Cliente c);
         Task DeleteAsync(int id);
     }
 }

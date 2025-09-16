@@ -38,10 +38,25 @@ namespace Proyecto_PorSalud.Services
             return c.Id;
         }
 
-        public async Task UpdateAsync(Cliente c)
+        public async Task<bool> UpdateAsync(Cliente c)
         {
-            _db.Entry(c).State = EntityState.Modified;
+            var original = await _db.Clientes.FindAsync(c.Id);
+            if (original == null) return false;
+            //_db.Entry(c).State = EntityState.Modified;
+
+            original.Identificacion = c.Identificacion;
+            original.NombreCompleto = c.NombreCompleto;
+            original.Direccion = c.Direccion;
+            original.Telefono = c.Telefono;
+            original.Celular = c.Celular;
+            original.Correo = c.Correo;
+            original.Sexo = c.Sexo;
+            original.Activo = c.Activo;
+
             await _db.SaveChangesAsync();
+            return true;
+            //_db.Entry(c).State = EntityState.Modified;
+            //await _db.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)

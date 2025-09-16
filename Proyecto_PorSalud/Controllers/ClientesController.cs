@@ -50,7 +50,8 @@ namespace Proyecto_PorSalud.Controllers
         public async Task<ActionResult> Edit(Cliente model)
         {
             if (!ModelState.IsValid) return new HttpStatusCodeResult(400, "Datos inválidos");
-            await Svc.UpdateAsync(model);
+            var ok = await Svc.UpdateAsync(model);
+            if (!ok) return HttpNotFound();
             return Json(new { ok = true });
         }
 
