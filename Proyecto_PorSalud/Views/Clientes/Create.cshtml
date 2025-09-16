@@ -1,0 +1,67 @@
+﻿@model Proyecto_PorSalud.Models.Cliente
+@{
+    ViewBag.Title = "Crear cliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3>Crear nuevo cliente</h3>
+<form id="frmCreate" method="post" action="@Url.Action("Create")">
+    @Html.AntiForgeryToken()
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label class="form-label">Identificación</label>
+            @Html.TextBoxFor(m => m.Identificacion, new { @class = "form-control", required = "required" })
+        </div>
+        <div class="col-md-8">
+            <label class="form-label">Nombre completo</label>
+            @Html.TextBoxFor(m => m.NombreCompleto, new { @class = "form-control", required = "required" })
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Dirección</label>
+            @Html.TextBoxFor(m => m.Direccion, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Teléfono</label>
+            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control" })
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Celular</label>
+            @Html.TextBoxFor(m => m.Celular, new { @class = "form-control" })
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Correo</label>
+            @Html.TextBoxFor(m => m.Correo, new { @class = "form-control", type = "email" })
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Sexo</label>
+            @Html.DropDownListFor(m => m.Sexo, new SelectList(new[] { "M", "F" }), "Seleccione", new { @class = "form-select", required = "required" })
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Estado</label><br />
+            <div class="form-check form-switch">
+                @Html.CheckBoxFor(m => m.Activo, new { @class = "form-check-input" })
+                <label class="form-check-label">Activo</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <button class="btn btn-primary" type="submit">Guardar</button>
+        <a class="btn btn-outline-secondary" href="@Url.Action("Index")">Volver</a>
+    </div>
+</form>
+
+@section scripts{
+    <script>
+$("#frmCreate").on("submit", function(e){
+  e.preventDefault();
+  $.ajax({
+    url: this.action,
+    method: "POST",
+    data: $(this).serialize(),
+    success: function(r){ window.location = "/Clientes/Index"; },
+    error: function(xhr){ alert(xhr.statusText); }
+  });
+});
+    </script>
+}

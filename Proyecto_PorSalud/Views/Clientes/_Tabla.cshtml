@@ -1,0 +1,145 @@
+﻿@using Proyecto_PorSalud.Services
+@model PagedResult<Proyecto_PorSalud.Models.Cliente>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Identificación</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Activo</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model.Items)
+        {
+            <tr>
+                <td>@c.Id</td>
+                <td>@c.Identificacion</td>
+                <td>@c.NombreCompleto</td>
+                <td>@c.Correo</td>
+                <td><span class="badge @(c.Activo? "bg-success":"bg-secondary")">@((c.Activo)?"Sí":"No")</span></td>
+                <td class="text-end">
+                    <a class="btn btn-sm btn-outline-primary" href="@Url.Action("Details", new { id = c.Id })">Detalles</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- paginado Bootstrap -->
+<nav>
+    @{
+        var page = Model.Page;
+        var pageSize = Model.PageSize;        // asegúrate de que tu PagedResult tenga esta prop
+        var total = Model.TotalItems;
+        var totalPages = Model.TotalPages;
+
+        int firstItem = total == 0 ? 0 : ((page - 1) * pageSize) + 1;
+        int lastItem = Math.Min(page * pageSize, total);
+
+        // ventana central de páginas
+        int window = 2; // +/- 2 alrededor de la actual
+        int start = Math.Max(1, page - window);
+        int end = Math.Min(totalPages, page + window);
+
+        // si la ventana es corta al principio/fin, intenta compensar
+        while (end - start < window * 2 && (start > 1 || end < totalPages))
+        {
+            if (start > 1) { start--; }
+            else if  (end < totalPages) { end++; }
+            else { break; }
+        }
+    }
+
+    @if (totalPages > 0)
+    {
+        <nav aria-label="Paginación" class="d-flex flex-column flex-md-row align-items-md-center gap-2">
+            <ul class="pagination mb-0">
+                <!-- Primera -->
+                <li class="page-item @(page == 1 ? "disabled" : "")">
+                    <a class="page-link link-page" href="#" data-page="1" aria-label="Primera">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                        <span class="visually-hidden">Primera</span>
+                    </a>
+                </li>
+
+                <!-- Anterior -->
+                <li class="page-item @(page == 1 ? "disabled" : "")">
+                    <a class="page-link link-page" href="#" data-page="@(Math.Max(1, page-1))" aria-label="Anterior">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="visually-hidden">Anterior</span>
+                    </a>
+                </li>
+
+                <!-- Elipsis izquierda -->
+                @if (start > 1)
+                {
+                    <li class="page-item">
+                        <a class="page-link link-page" href="#" data-page="1">1</a>
+                    </li>
+                    if (start > 2)
+                    {
+                        <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                    }
+                }
+
+                <!-- Ventana de páginas -->
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i == page ? "active" : "")" @(i == page ? new { ariaCurrent = "page" } : null)>
+                        <a class="page-link link-page" href="#" data-page="@i">@i</a>
+                    </li>
+                }
+
+                <!-- Elipsis derecha -->
+                @if (end < totalPages)
+                {
+                    if (end < totalPages - 1)
+                    {
+                        <li class="page-item disabled"><span class="page-link">&hellip;</span></li>
+                    }
+                    <li class="page-item">
+                        <a class="page-link link-page" href="#" data-page="@totalPages">@totalPages</a>
+                    </li>
+                }
+
+                <!-- Siguiente -->
+                <li class="page-item @(page == totalPages ? "disabled" : "")">
+                    <a class="page-link link-page" href="#" data-page="@(Math.Min(totalPages, page+1))" aria-label="Siguiente">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="visually-hidden">Siguiente</span>
+                    </a>
+                </li>
+
+                <!-- Última -->
+                <li class="page-item @(page == totalPages ? "disabled" : "")">
+                    <a class="page-link link-page" href="#" data-page="@totalPages" aria-label="Última">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                        <span class="visually-hidden">Última</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Resumen + page size -->
+            <div class="ms-md-3 small text-muted">
+                Mostrando <strong>@firstItem</strong>–<strong>@lastItem</strong> de <strong>@total</strong> registros
+            </div>
+
+            <div class="ms-md-auto">
+                <div class="input-group input-group-sm" style="max-width: 220px;">
+                    <label class="input-group-text" for="pageSize">Por página</label>
+                    <select id="pageSize" class="form-select" data-page-size>
+                        <option value="10" @(pageSize == 10 ? "selected" : "")>10</option>
+                        <option value="20" @(pageSize == 20 ? "selected" : "")>20</option>
+                        <option value="50" @(pageSize == 50 ? "selected" : "")>50</option>
+                        <option value="100" @(pageSize == 100 ? "selected" : "")>100</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    }
+
+</nav>
