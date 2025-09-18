@@ -1,9 +1,15 @@
 var ClientesIndex = (function () {
     var state = { page: 1, pageSize: 20, search: "" };
 
-    function cargar() {
+    async function cargar() {
         //$("#contenedorTabla").load("/Clientes/Lista", state);
-        $("#contenedorTabla").load("/Clientes/Lista" + '?' + $.param({ page: state.page, pageSize: state.pageSize, search: state.search }));
+        //$("#contenedorTabla").load("/Clientes/Lista" + '?' + $.param({ page: state.page, pageSize: state.pageSize, search: state.search }));
+        const url = "/Clientes/Lista";
+        const params = new URLSearchParams({ page: state.page, pageSize: state.pageSize, search: state.search });
+        const resp = await fetch(`${url}?${params}`);
+        const html = await resp.text();
+        //console.log(html);
+        document.getElementById('contenedorTabla').innerHTML = html;
 
     }
 
